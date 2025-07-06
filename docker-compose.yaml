@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: user-api
+    depends_on:
+      - db
+      - redis
+      - mailer
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    command: npm run start:prod
+    volumes:
+      - .:/app
+    restart: always
+
+  db:
+    image: postgres:15
+    container_name: user-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: dars
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: user-redis
+    ports:
+      - '6379:6379'
+    restart: always
+
+  mailer:
+    image: mailhog/mailhog
+    container_name: user-mailer
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  postgres_data:
