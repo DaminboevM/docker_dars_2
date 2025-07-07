@@ -26,7 +26,7 @@ jobs:
 
             if [ ! -d .git ]; then
               echo "Cloning repository !!! "
-              git clone https://github.com/DaminboevM/nest_dars.git .
+              git clone https://github.com/DaminboevM/docker_dars_2.git
             else
               echo "Pulling latest changes "
               git pull origin main
