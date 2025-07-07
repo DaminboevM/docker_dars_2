@@ -3,14 +3,14 @@ name: Create Loiha
 on: 
   push: 
     branches: 
-      -main
+      - main  # 'main' va '-main' emas
 
 jobs:
   deploy:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest  # 'ubuntu-lates' emas
 
     steps:
-      - name: Chekout code
+      - name: Checkout code  # 'Chekout' emas
         uses: actions/checkout@v3
 
       - name: Deploy over SSH
@@ -19,24 +19,25 @@ jobs:
           host: ${{ secrets.DB_HOST }}
           username: ${{ secrets.DB_USER }}
           key: ${{ secrets.SSH_KEY }}
-          script:
-            echo "Createing project folder if it doesn't exists !!!"
+          script: |
+            echo "Creating project folder if it doesn't exist!"
             mkdir -p /home/ubuntu/nest_dars
             cd /home/ubuntu/nest_dars
 
-            if [ ! -d .git ]; then
-              echo "Cloning repository !!! "
+            if [ ! -d "docker_dars_2/.git" ]; then
+              echo "Cloning repository!"
               git clone https://github.com/DaminboevM/docker_dars_2.git
             else
-              echo "Pulling latest changes "
+              echo "Pulling latest changes!"
+              cd docker_dars_2
               git pull origin main
             fi
 
-            echo "Stoping Containers "
-            docker compose  down
+            echo "Stopping containers"
+            docker compose down
 
-            echo "Building conainers"
-            docker compose bould
+            echo "Building containers"
+            docker compose build  # 'bould' emas
 
-            echo "running containers "
-            docker compose up -d
+            echo "Running containers"
+            docker compose up -d  # '-dbu' notogri
