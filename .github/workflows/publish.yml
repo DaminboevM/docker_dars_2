@@ -1,0 +1,42 @@
+name: Create Loiha
+
+on: 
+  push: 
+    branches: 
+      -main
+
+jobs:
+  deploy:
+    runs-on: ubuntu
+
+    steps:
+      - name: Chekout code
+        uses: actions/checkout@v3
+
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DB_HOST }}
+          username: ${{ secrets.DB_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script:
+            echo "Createing project folder if it doesn't exists !!!"
+            mkdir -p /home/ubuntu/nest_dars
+            cd /home/ubuntu/nest_dars
+
+            if [ ! -d .git ]; then
+              echo "Cloning repository !!! "
+              git clone https://github.com/DaminboevM/nest_dars.git .
+            else
+              echo "Pulling latest changes "
+              git pull origin main
+            fi
+
+            echo "Stoping Containers "
+            docker compose  down
+
+            echo "Building conainers"
+            docker compose bould
+
+            echo "running containers "
+            docker compose up -d
