@@ -3,14 +3,14 @@ name: Create Loiha
 on: 
   push: 
     branches: 
-      - main  # 'main' va '-main' emas
+      - main
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # 'ubuntu-lates' emas
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code  # 'Chekout' emas
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Deploy over SSH
